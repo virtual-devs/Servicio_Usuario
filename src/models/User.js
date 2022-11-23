@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
+import bcrypt from 'bcryptjs';
 
 export const User = sequelize.define(
   "users",
@@ -31,3 +32,12 @@ export const User = sequelize.define(
     timestamps: false,
   }
 );
+
+export const encryptPassword = async(password)=>{
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(password, salt);
+}
+
+export const comparePassword = async(password, receivedPassword)=>{
+  return await bcrypt.compare(password, receivedPassword);
+}
