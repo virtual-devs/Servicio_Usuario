@@ -57,3 +57,54 @@ export const signIn = async (req, res) => {
         return res.status(500).json({ massage: error.massage });
     }
 };
+
+
+export const verifyTokenA = async (req, res) => {
+    try {
+      const token = req.headers["token"];
+      const rol = "arrendador";
+  
+      if (!token) return res.status(403).json({ message: "No token provided" });
+  
+      const decoded = jwt.verify(token, SECRET_KEY);
+  
+      const user = await User.findOne({
+          where:{
+              id: decoded.id,
+              rol: rol,
+          }
+      });
+  
+      if(!user) return res.status(404).json({message: 'User not found'});
+  
+      return res.status(200).json({massage: 'User Found'})
+  
+    } catch (error) {
+      return res.status(401).json({ massage: "Unauthorized" });
+    }
+  };
+
+  export const verifyTokenV = async (req, res) => {
+    try {
+      const token = req.headers["token"];
+      const rol = "viajero";
+  
+      if (!token) return res.status(403).json({ message: "No token provided" });
+  
+      const decoded = jwt.verify(token, SECRET_KEY);
+  
+      const user = await User.findOne({
+          where:{
+              id: decoded.id,
+              rol: rol,
+          }
+      });
+  
+      if(!user) return res.status(404).json({message: 'User not found'});
+  
+      return res.status(200).json({massage: 'User Found'})
+  
+    } catch (error) {
+      return res.status(401).json({ massage: "Unauthorized" });
+    }
+  };
