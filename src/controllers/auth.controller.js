@@ -35,11 +35,10 @@ export const signUp = async (req, res) => {
 
 export const signIn = async (req, res) => {
     try {
-        const {email, password, rol } = req.body;
+        const {email, password} = req.body;
         const userFound = await User.findOne({
             where:{
                 email: email,
-                rol: rol
             }
         });
 
