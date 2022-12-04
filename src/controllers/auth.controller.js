@@ -57,6 +57,18 @@ export const signIn = async (req, res) => {
     }
 };
 
+export const logout = async (req, res) => {
+  try {
+
+    const token = req.headers["token"];
+    const logged = jwt.sign({token}, " ", {expiresIn: 1} )
+    req.headers["token"] = logged
+    return res.status(200).json("logged")
+    
+  } catch (error) {
+    return res.status(500).json({ massage: error.massage });
+  }
+}
 
 export const verifyTokenA = async (req, res) => {
     try {

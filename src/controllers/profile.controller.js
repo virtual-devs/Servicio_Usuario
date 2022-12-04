@@ -25,12 +25,10 @@ export const getUsuarioOne = async (req, res) => {
 
 export const createPerfil = async (req, res) => {
   try {
-    const { idUsuario, nombre, apellidos, telefono, direccion } = req.body;
+    const { idUsuario, telefono, direccion } = req.body;
 
     const newProfile = await Profile.create({
       idUsuario,
-      nombre,
-      apellidos,
       telefono,
       direccion,
     });
@@ -44,13 +42,10 @@ export const createPerfil = async (req, res) => {
 export const updatePerfil = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nombre, apellidos, telefono, direccion } = req.body;
+    const { telefono, direccion } = req.body;
 
     const usuario = await Profile.findByPk(id);
-
-    (usuario.nombre = nombre),
-      (usuario.apellidos = apellidos),
-      (usuario.telefono = telefono),
+    (usuario.telefono = telefono),
       (usuario.direccion = direccion),
       await usuario.save();
     res.json(usuario);
