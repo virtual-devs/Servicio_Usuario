@@ -6,5 +6,6 @@ const router = Router();
 router.post('/signUp', signUp);
 router.post('/signIn', signIn);
 router.post('/verifyA', verifyTokenA);
+router.post('/verifyV', verifyTokenV)
 router.put('/logout', logout)
 export default router;
