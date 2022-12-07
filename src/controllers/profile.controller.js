@@ -25,10 +25,11 @@ export const getUsuarioOne = async (req, res) => {
 
 export const createPerfil = async (req, res) => {
   try {
-    const { idUsuario, telefono, direccion } = req.body;
+    const { idUsuario, nombre, telefono, direccion } = req.body;
 
     const newProfile = await Profile.create({
       idUsuario,
+      nombre,
       telefono,
       direccion,
     });
@@ -44,11 +45,22 @@ export const updatePerfil = async (req, res) => {
     const { id } = req.params;
     const { telefono, direccion } = req.body;
 
-    const usuario = await Profile.findByPk(id);
-    (usuario.telefono = telefono),
-      (usuario.direccion = direccion),
+    const usuario = await Profile.findOne({
+      where: {
+        idUsuario: id,
+      },
+    });
+
+    if (usuario != null) {
+      usuario.telefono = telefono;
+      usuario.direccion = direccion;
       await usuario.save();
-    res.json(usuario);
+      return res.json(usuario);
+    }
+
+    return res.status(404).json({message: 'Not found'})
+   
+    
   } catch (error) {
     return res.status(500).json({ massage: error.massage });
   }
@@ -56,10 +68,10 @@ export const updatePerfil = async (req, res) => {
 
 export const deletePerfil = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { idUsuario } = req.params;
     await Profile.destroy({
       where: {
-        id,
+        idUsuario,
       },
     });
     res.sendStatus(204);
